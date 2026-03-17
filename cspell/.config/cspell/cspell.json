@@ -1,0 +1,8 @@
+{
+  "version": "0.2",
+  "language": "en,en-US",
+  "dictionaryDefinitions": [
+    { "name": "my-global-words", "path": "./my-words.txt", "addWords": true }
+  ],
+  "dictionaries": ["my-global-words"]
+}

@@ -1,0 +1,8 @@
+font-size = 16
+font-family = Berkeley Mono
+theme = "TokyoNight Night"
+title = " "
+adjust-cell-height = 20%
+window-padding-balance = true
+window-save-state = always
+macos-titlebar-style = transparent

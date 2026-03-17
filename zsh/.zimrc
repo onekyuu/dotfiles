@@ -1,0 +1,27 @@
+# -----------------
+# 1. 基础环境与工具 (最先加载)
+# -----------------
+zmodule environment
+zmodule input
+zmodule utility
+zmodule zsh-users/zsh-history-substring-search
+
+# -----------------
+# 2. 补全系统 (关键顺序！)
+# -----------------
+zmodule zsh-users/zsh-completions --fpath src
+zmodule completion
+
+# -----------------
+# 3. 业务插件 (依赖补全系统)
+# -----------------
+zmodule ohmyzsh/ohmyzsh --root plugins/git
+zmodule ohmyzsh/ohmyzsh --root plugins/z
+
+# -----------------
+# 4. 界面增强 (必须放在最后)
+# -----------------
+# 自动建议
+zmodule zsh-users/zsh-autosuggestions
+# 语法高亮 (必须是整个文件的最后一行)
+zmodule zsh-users/zsh-syntax-highlighting

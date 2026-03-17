@@ -1,0 +1,17 @@
+# Zsh
+.zim/
+.zcompdump*
+.zsh_history
+
+github-copilot/
+filezilla/
+qBittorrent/
+tmux/.config/tmux/plugins/
+
+configstore/
+uv/
+builder/
+ok/
+opencode/
+requestly/
+.DS_Store

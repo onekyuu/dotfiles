@@ -1,0 +1,18 @@
+font-size = 16
+font-family = MesloLGS Nerd Font Mono
+theme = "Catppuccin Mocha"
+adjust-cell-height = 20%
+window-padding-balance = true
+window-save-state = always
+macos-titlebar-style = transparent
+custom-shader = "~/.config/ghostty/shaders/cursor_smear.glsl"
+shell-integration-features = no-title
+
+keybind = shift+enter=text:\x1b\r
+keybind = ctrl+shift+j=write_scrollback_file:open
+keybind = global:command+space=toggle_quick_terminal
+
+quick-terminal-position = center
+quick-terminal-size = 1100px, 700px
+quick-terminal-screen = macos-menu-bar
+quick-terminal-autohide = true
