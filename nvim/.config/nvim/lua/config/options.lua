@@ -4,3 +4,6 @@
 
 vim.opt.spell = false
 vim.o.exrc = true
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.writebackup = false
