@@ -12,17 +12,13 @@ keymap.set("n", "te", ":tabedit", opts)
 keymap.set("n", "<tab>", ":tabnext<Return>", opts)
 
 vim.keymap.set("n", "<leader>ua", function()
-  -- 引入必要的模块
   local client = require("copilot.client")
   local command = require("copilot.command")
 
-  -- client.is_disabled() 会告诉你当前是否处于禁用状态
   if client.is_disabled() then
-    -- 如果是禁用的，则启用
     command.enable()
     vim.notify("🤖 Copilot: 已启动 (Enabled)", vim.log.levels.INFO)
   else
-    -- 如果是启用的，则禁用
     command.disable()
     vim.notify("🔕 Copilot: 已禁用 (Disabled)", vim.log.levels.WARN)
   end
