@@ -1,12 +1,23 @@
 [mgr]
 prepend_keymap = [
-    # Neovim 打开 (e)
-    { on = [ "e" ], run = 'shell "nvim \"$@\"" --block --confirm', desc = "Open in Neovim" },
+  { on = [
+    "<Enter>",
+  ], run = "enter", desc = "Enter the child directory" },
+  # Neovim 打开 (e)
+  { on = [
+    "e",
+  ], run = 'shell "nvim \"$@\"" --block --confirm', desc = "Open in Neovim" },
 
-    # Finder 显示 (E)
-    { on = [ "E" ], run = 'shell "open -R \"$@\"" --orphan', desc = "Reveal in Finder" },
+  # Finder 显示 (E)
+  { on = [
+    "E",
+  ], run = 'shell "open -R \"$@\"" --orphan', desc = "Reveal in Finder" },
 
-    # 基础功能
-    { on = [ "s" ], run = "linemode size", desc = "Show size" },
-    { on = [ "m" ], run = "linemode mtime", desc = "Show time" }
+  # 基础功能
+  { on = [
+    "s",
+  ], run = "linemode size", desc = "Show size" },
+  { on = [
+    "m",
+  ], run = "linemode mtime", desc = "Show time" },
 ]
