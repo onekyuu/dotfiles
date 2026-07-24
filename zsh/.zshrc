@@ -1,7 +1,8 @@
+# Keep zsh's tied `path`/`PATH` values unique while preserving order.
+typeset -U path PATH
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    export PATH="/opt/homebrew/bin:$PATH"
-    export PATH="/usr/local/bin:$PATH" # 确保 fcitx5-remote 能被找到
     alias ls="ls -G"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Arch Linux
@@ -11,11 +12,24 @@ fi
 # ==========================================
 # 1. 基础环境与路径 (Path)
 # ==========================================
-# Homebrew (尽早加载)
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export LANG=en_US.UTF-8
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home"
+export PNPM_HOME="$HOME/Library/pnpm"
+export BUN_INSTALL="$HOME/.bun"
+
+path=(
+  "$HOME/.config/emacs/bin"
+  "$HOME/.kimi-code/bin"
+  "$HOME/.local/bin"
+  "$BUN_INSTALL/bin"
+  "$HOME/.pnpm-global/bin"
+  "$PNPM_HOME"
+  "$JAVA_HOME/bin"
+  "/usr/local/bin"
+  $path
+)
+export PATH
 
 # ==========================================
 # 2. 启动 Zim 框架 (替代 Oh My Zsh)
@@ -28,48 +42,35 @@ fi
 # 初始化 Zim
 source ${ZIM_HOME}/init.zsh
 
-eval "$(fnm env --use-on-cd --shell zsh)"
+if (( $+commands[fnm] )); then
+  eval "$(fnm env --use-on-cd --shell zsh)"
+fi
 
 # ==========================================
 # 4. 其他语言环境 (Java, Python, Bun, pnpm)
 # ==========================================
-# Java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
-export PATH=$JAVA_HOME/bin:$PATH
-
 # Python alias
 alias py=/usr/bin/python3
 
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-export PATH="$HOME/.pnpm-global/bin:$PATH"
-
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Bun completion
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # ==========================================
 # 5. 工具配置 (Claude, DeepSeek, Yazi, Tmux)
 # ==========================================
-# Claude Code
-export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
-export ANTHROPIC_AUTH_TOKEN="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"
-export ANTHROPIC_API_KEY=""
-export CLAUDE_CODE_SLOW_MODEL="anthropic/claude-sonnet-4.5"
-
-# DeepSeek
-export DEEPSEEK_API_KEY="sk-99d66f8dcc31427888611be7327f123f"
-
 # Gemini
 alias gemini='$HOME/.nvm/versions/node/v22.12.0/bin/gemini'
 
-# Fcitx5
-export PATH="$HOME/.local/bin:$PATH"
+uv-publish-secure() {
+  local token
+
+  token="$(my-keychain-secret pypi-publish-token)" || return 1
+
+  (
+    export UV_PUBLISH_TOKEN="$token"
+    command uv publish "$@"
+  )
+}
 
 # Yazi function
 function y() {
@@ -87,7 +88,12 @@ tm() {
     else
         name=$1
     fi
-    tmux attach -t "$name" || tmux new -s "$name"
+
+    if tmux has-session -t "=$name" 2>/dev/null; then
+        tmux attach -t "=$name"
+    else
+        tmux new -s "$name"
+    fi
 }
 
 # Kiro Terminal Integration
@@ -135,9 +141,3 @@ eval "$(starship init zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
-
-# fnm
-FNM_PATH="/opt/homebrew/opt/fnm/bin"
-if [ -d "$FNM_PATH" ]; then
-  eval "`fnm env --use-on-cd`"
-fi

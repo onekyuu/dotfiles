@@ -24,6 +24,13 @@ cd ~/dotfiles
 
 ## 工具概览
 
+### Doom Emacs — 可编程编辑环境
+
+私有配置位于 [`doom/.config/doom`](./doom/.config/doom)，启用 Evil、Corfu、
+Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macOS
+下的 Modeline 会缓存显示 CPU、内存、磁盘、电池和时间；其他系统使用 Doom
+默认 Modeline。
+
 ### Neovim — 核心编辑器
 
 基于 [LazyVim](https://lazyvim.github.io) 深度定制。LazyVim 提供开箱即用的 LSP、Treesitter、格式化等基础设施，在此之上添加了以下自定义配置。

@@ -1,0 +1,8 @@
+{
+  "plugins": {
+    "opencode.nvim": {
+      "rev": "df533d6da724109bf08446392db860fdceddbd0c",
+      "src": "https://github.com/nickjvandyke/opencode.nvim"
+    }
+  }
+}

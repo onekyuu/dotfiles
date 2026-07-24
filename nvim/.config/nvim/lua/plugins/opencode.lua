@@ -1,82 +1,56 @@
 return {
-  "folke/snacks.nvim",
-  keys = (function()
-    local term = nil
-    local win_opts = {
-      win = {
-        position = "right",
-        width = 0.40,
-        height = 1.0,
-        border = "rounded",
-        title = " OpenCode ",
-        title_pos = "center",
-      },
-      auto_insert = true,
-      env = {
-        TERM = "xterm-256color",
-        COLORTERM = "truecolor",
-      },
-    }
+  "nickjvandyke/opencode.nvim",
 
-    local function toggle()
-      if term and term:buf_valid() then
-        term:toggle()
-      else
-        term = Snacks.terminal.open("opencode", win_opts)
-      end
+  -- init 函数会在插件被真正加载前执行，非常适合用来设置 vim.g.* 这样的全局变量
+  init = function()
+    local opencode_window = "opencode"
+    local opencode_cmd = "opencode --port"
+
+    local function tmux_window_exists()
+      local windows = vim.fn.systemlist({ "tmux", "list-windows", "-F", "#W" })
+      return vim.tbl_contains(windows, opencode_window)
     end
 
-    local function new_session()
-      term = nil
-      term = Snacks.terminal.open("opencode", win_opts)
-    end
-
-    local function send_selection()
-      local buf = vim.api.nvim_get_current_buf()
-      local start_line = vim.fn.line("'<") - 1
-      local end_line = vim.fn.line("'>")
-      local lines = vim.api.nvim_buf_get_lines(buf, start_line, end_line, false)
-      local ft = vim.bo[buf].filetype
-      local filename = vim.fn.expand("%:t")
-      local text = string.format("```%s\n-- %s:%d-%d\n%s\n```\n", ft, filename, start_line + 1, end_line, table.concat(lines, "\n"))
-      if term and term:buf_valid() then
-        local chan = vim.b[term.buf].terminal_job_id
-        if chan then
-          vim.api.nvim_chan_send(chan, text)
-          return
-        end
-      end
-      vim.notify("OpenCode terminal is not open", vim.log.levels.WARN)
-    end
-
-    local function add_files()
-      Snacks.picker.files({
-        confirm = function(picker, item)
-          local items = picker:selected({ fallback = true })
-          picker:close()
-          if #items == 0 then return end
-          local paths = {}
-          for _, it in ipairs(items) do
-            table.insert(paths, "@" .. it.cwd .. "/" .. it.file)
+    vim.g.opencode_opts = {
+      server = {
+        start = function()
+          if not tmux_window_exists() then
+            vim.fn.system({ "tmux", "new-window", "-d", "-n", opencode_window, opencode_cmd })
           end
-          local text = table.concat(paths, " ") .. " "
-          if term and term:buf_valid() then
-            local chan = vim.b[term.buf].terminal_job_id
-            if chan then
-              vim.api.nvim_chan_send(chan, text)
-              return
-            end
-          end
-          vim.notify("OpenCode terminal is not open", vim.log.levels.WARN)
         end,
-      })
-    end
-
-    return {
-      { "<leader>oc", toggle, mode = { "n", "t" }, desc = "Toggle OpenCode" },
-      { "<leader>oC", new_session, desc = "New OpenCode Session" },
-      { "<leader>of", add_files, desc = "Add files to OpenCode prompt" },
-      { "<leader>os", send_selection, mode = "v", desc = "Send selection to OpenCode" },
+        stop = function()
+          if tmux_window_exists() then
+            vim.fn.system({ "tmux", "kill-window", "-t", opencode_window })
+          end
+        end,
+        toggle = function()
+          if tmux_window_exists() then
+            vim.fn.system({ "tmux", "select-window", "-t", opencode_window })
+          else
+            vim.fn.system({ "tmux", "new-window", "-n", opencode_window, opencode_cmd })
+          end
+        end,
+      },
     }
-  end)(),
+  end,
+
+  -- 使用 keys 替代底部的 vim.keymap.set，以支持 Lazy 的快捷键懒加载特性
+  keys = {
+    {
+      "<leader>oa",
+      function()
+        require("opencode").ask("@buffer: ")
+      end,
+      mode = "n",
+      desc = "OpenCode: Ask Buffer",
+    },
+    {
+      "<leader>oa",
+      function()
+        require("opencode").ask("@this: ")
+      end,
+      mode = "v",
+      desc = "OpenCode: Ask Selection",
+    },
+  },
 }

@@ -31,6 +31,7 @@ TARGETS=(
 	"$HOME/.config/yazi"
 	"$HOME/.config/starship.toml"
 	"$HOME/.config/cspell"
+	"$HOME/.config/doom"
 )
 
 for target in "${TARGETS[@]}"; do
@@ -46,7 +47,7 @@ if [ -d "$BACKUP_DIR" ]; then
 fi
 
 echo "🔗 正在使用 Stow 映射配置包裹..."
-PACKAGES=(zsh nvim ghostty tmux yazi starship cspell)
+PACKAGES=(zsh nvim ghostty tmux yazi starship cspell doom)
 
 for pkg in "${PACKAGES[@]}"; do
 	if [ -d "$DOTFILES_DIR/$pkg" ]; then
