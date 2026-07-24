@@ -16,6 +16,7 @@ if ! command -v curl &>/dev/null; then
 fi
 
 DOTFILES_DIR="$HOME/dotfiles"
+SYSTEM_NAME="$(uname -s)"
 cd "$DOTFILES_DIR"
 
 echo "🛡️  正在扫描并备份已存在的系统默认配置..."
@@ -34,6 +35,10 @@ TARGETS=(
 	"$HOME/.config/doom"
 )
 
+if [[ "$SYSTEM_NAME" == "Darwin" ]]; then
+	TARGETS+=("$HOME/.config/karabiner/karabiner.json")
+fi
+
 for target in "${TARGETS[@]}"; do
 	if [ -e "$target" ] && [ ! -L "$target" ]; then
 		echo "   📦 发现真实文件冲突，正在备份: $target"
@@ -49,10 +54,18 @@ fi
 echo "🔗 正在使用 Stow 映射配置包裹..."
 PACKAGES=(zsh nvim ghostty tmux yazi starship cspell doom)
 
+if [[ "$SYSTEM_NAME" == "Darwin" ]]; then
+	PACKAGES+=(karabiner)
+fi
+
 for pkg in "${PACKAGES[@]}"; do
 	if [ -d "$DOTFILES_DIR/$pkg" ]; then
 		echo "   -> 投射: $pkg"
-		stow "$pkg"
+		if [[ "$pkg" == "karabiner" ]]; then
+			stow --no-folding "$pkg"
+		else
+			stow "$pkg"
+		fi
 	fi
 done
 

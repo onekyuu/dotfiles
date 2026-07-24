@@ -8,6 +8,8 @@ filezilla/
 qBittorrent/
 tmux/.config/tmux/plugins/
 doom/.config/doom/custom.el
+karabiner/.config/karabiner/automatic_backups/
+karabiner/.config/karabiner/assets/
 
 configstore/
 uv/

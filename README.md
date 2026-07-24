@@ -31,6 +31,12 @@ Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macO
 下的 Modeline 会缓存显示 CPU、内存、磁盘、电池和时间；其他系统使用 Doom
 默认 Modeline。
 
+### Karabiner-Elements — macOS 键盘映射
+
+当前键盘映射位于
+[`karabiner/.config/karabiner/karabiner.json`](./karabiner/.config/karabiner/karabiner.json)。
+安装脚本仅在 macOS 部署该配置，并保留 `automatic_backups` 和 `assets` 为本机状态。
+
 ### Neovim — 核心编辑器
 
 基于 [LazyVim](https://lazyvim.github.io) 深度定制。LazyVim 提供开箱即用的 LSP、Treesitter、格式化等基础设施，在此之上添加了以下自定义配置。
