@@ -1,72 +1,143 @@
-# 💤 LazyVim 配置总结
+# Neovim 配置
 
-这是一个基于 [LazyVim](https://github.com/LazyVim/LazyVim) 的 Neovim 配置。
+基于 [LazyVim](https://www.lazyvim.org/) 的个人配置，覆盖前端、Python、Rust 和 C/C++ 开发。插件版本记录在 `lazy-lock.json`，语言扩展由 `lazyvim.json` 管理。
 
-## ⚙️ 核心设置 (`lua/config/options.lua`)
-- 禁用拼写检查 (`spell = false`)
-- 启用 `exrc` (支持本地项目配置)
-- 禁用 swap/backup 文件，保持工作区整洁
+## 启动与依赖
 
-## ⌨️ 快捷键 (`lua/config/keymaps.lua`)
-- **插入模式**: `jk` 映射为 `<Esc>`
-- **标签页**: `te` 新建标签页，`<tab>` 切换下一个标签页
-- **CodeCompanion**: `<leader>ac` 打开/隐藏聊天，`<leader>an` 新建聊天，`<leader>aa` 打开操作面板，选中文本后 `<leader>as` 添加到聊天
-  - 聊天窗口内：`<C-s>` 发送，`<C-c>` 关闭，`q` 停止请求，`?` 查看全部按键
-- **搜索**:
-  - `<leader>sg`: 在当前工作目录 (CWD) 中 grep
-  - `<leader>sG`: 在项目根目录中 grep
-  - `<leader>sd`: 在指定目录中 grep
-- **终端**: 在终端模式下 `<C-/>` 可强制关闭当前终端
+将本目录下的 `.config/nvim` 放置或链接到 `~/.config/nvim`，启动 Neovim。Lazy 安装插件，Mason 按配置安装语言服务器和工具。
 
-## 🧩 插件列表与详细功能
+- 使用满足 LazyVim 当前要求的 Neovim，以及 Git、Node.js、Python、ripgrep 和 fd。
+- Biome 格式化命令优先查找项目 `node_modules/.bin`，再查找 PATH；Biome 项目建议在开发依赖中安装 `@biomejs/biome`，保持编辑器和 CI 版本一致。
+- Rust 编译工具链、C/C++ 编译器和 CMake 需要单独安装；Mason 不负责安装编译器。
+- OpenCode 集成需要 tmux 会话及 PATH 中的 `opencode`；CodeCompanion 使用 Codex ACP 和 ChatGPT 登录。
 
-### 补全与 AI
-- `blink.cmp`: 高性能代码补全引擎。
-- `codecompanion.nvim`: 通过 Codex ACP 使用 ChatGPT 订阅聊天（`:CodeCompanionChat`）。
+常用管理命令：`:Lazy` 查看插件，`:LazyExtras` 管理扩展，`:Mason` 查看开发工具，`:ConformInfo` 查看格式化工具，`:checkhealth` 检查环境。
 
-### 格式化与 Lint
-- `conform.nvim`: 代码自动格式化工具。
-- `nvim-lint`: 代码静态检查工具。
-- `typos-lsp`: 低误报拼写检查，使用 `<leader>ca` 查看修正建议；项目例外可配置在 `_typos.toml` 中。
-- 前端：有 `biome.json/jsonc` 时优先使用 Biome 格式化与 LSP 诊断；否则有 Prettier 配置时使用 Prettier。ESLint 保留诊断和代码操作，不自动格式化。
-- Python：Pyright 负责类型检查，Ruff 负责诊断；保存只执行 `ruff format`，修复 lint 和整理 import 使用 `<leader>ca`。
-- 自动保存在切换文件缓冲区或失去焦点时触发；格式化沿用 LazyVim 默认的 3000ms 超时。
-- HTML/CSS 语言服务已启用。
+## 语言支持
 
-### Rust 与 C/C++
-- 使用 LazyVim 官方 `lang.rust` 和 `lang.clangd` 扩展；首次启动由 Lazy/Mason 安装对应插件与工具。
-- Rust：`rustaceanvim` 管理 rust-analyzer，避免重复启动 LSP；提供补全、类型诊断、代码操作和 rustfmt 格式化，`crates.nvim` 提供 Cargo 依赖提示。
-- Rust 工具链使用 rustup：`rustup component add rust-analyzer rustfmt clippy`；项目用 Cargo 管理，版本需要固定时添加 `rust-toolchain.toml`。
-- C/C++：clangd 提供补全、诊断和 clang-tidy 检查，`<leader>ch` 切换源文件/头文件；保存使用 clang-format，风格由项目 `.clang-format` 决定。
-- CMake 项目使用 `cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON` 生成编译数据库，供 clangd 读取真实的编译参数；编译器和 CMake 需单独安装。
-- 尚未启用 DAP 或测试运行器扩展；有实际调试、测试需求时再启用。
+| 语言 | 补全与诊断 | 格式化与项目配置 |
+| --- | --- | --- |
+| JavaScript / TypeScript / JSX / TSX | vtsls、Biome LSP、ESLint | 有 Biome 配置时优先使用 Biome；否则有 Prettier 配置时使用 Prettier |
+| HTML / CSS | HTML、CSS 语言服务；Tailwind CSS 语言服务 | 使用相同的 Biome / Prettier 选择策略 |
+| Python | Pyright 类型检查、原生 Ruff 诊断、虚拟环境选择 | 保存只执行 `ruff format`；规则写在项目 `pyproject.toml` 或 Ruff 配置中 |
+| Rust | rustaceanvim 管理 rust-analyzer；crates.nvim 提供 Cargo 依赖提示 | rustfmt；项目使用 Cargo，可用 `rust-toolchain.toml` 固定工具链 |
+| C / C++ | clangd、clang-tidy 检查、源文件与头文件切换 | clang-format；项目使用 `.clang-format` 和编译数据库 |
 
-### UI 与外观
-- `catppuccin`: Catppuccin Macchiato 配色方案。
-- `tokyonight.nvim`: Tokyo Night Moon 备用配色方案。
-- `kanagawa.nvim`: Kanagawa Wave 备用配色方案。
-- `incline.nvim`: 浮动文件名显示。
-- `lualine.nvim`: 状态栏增强。
-- `noice.nvim`: 优化 LSP 文档边框和 UI 消息。
-- `nvim-notify`: 优化通知显示。
+此外已启用 Go、Java、Zig、Docker、Git、JSON、Markdown、TOML 和 YAML 扩展。Vue、Svelte、Astro 有格式化映射，但未启用各自的专用语言扩展。
 
-### 工具与效率
-- `snacks.nvim`: 综合工具集（包含终端、文件搜索、Dashboard 等）。
-- `fcitx.nvim`: Fcitx5 输入法自动切换支持。
-- `goto-preview`: 定义预览功能。
-- `hardtime.nvim`: 强制养成良好的 Vim 操作习惯。
-- `markdown-preview.nvim`: Markdown 实时预览。
-- `render-markdown.nvim`: Markdown 渲染增强。
-- `nvim-surround`: 文本环绕操作（添加/删除/修改引号、括号等）。
-- `vim-tmux-navigator`: Tmux 与 Neovim 窗口导航集成。
+### 前端
 
-### 关键插件亮点
-- **OpenCode 集成 (`lua/plugins/opencode.lua`)**:
-  - 使用 `snacks.nvim` 实现 OpenCode 终端集成。
-  - `<leader>oc`: 切换 OpenCode 终端
-  - `<leader>oC`: 新建 OpenCode 会话
-  - `<leader>of`: 添加文件到 OpenCode 提示词
-  - `<leader>os`: 在可视模式下将选中内容发送到 OpenCode
+- Biome 只有找到 `biome.json` 或 `biome.jsonc` 时才参与 Conform 格式化；同时存在 Biome 和 Prettier 配置时优先选择可用的 Biome。
+- Prettier 要求项目有自己的配置。没有这两类配置时，不启用这两个 CLI 格式化工具；LazyVim 的 LSP 格式化回退仍保留。
+- Biome 诊断由 LSP 提供，不使用 `nvim-lint` 的 `biomejs` 输出解析器。
+- ESLint 保留诊断和代码操作，关闭自动格式化，避免保存时重复修改。
+- 同一项目同时使用 Biome 和 ESLint 时，在项目中明确两者的规则分工。
 
----
-Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
+### Python
+
+- Pyright 负责类型检查、补全和导航；Ruff 负责 lint、修复和整理 import。Pyright 的 import 整理已关闭，Ruff 的 hover 由官方 Python 扩展关闭，保留 Pyright 的文档提示。
+- `<leader>cv` 选择虚拟环境；项目规则和类型检查强度放在 `pyproject.toml` 或 `pyrightconfig.json` 中。
+- 保存只格式化，不执行 `ruff check --fix`，避免删除编辑过程中暂未使用的 import。
+- 使用 `<leader>ca` 显式执行修复或整理 import；若希望 lint 修复包含 import 排序，在项目 Ruff 规则中启用 `I`。
+
+### Rust
+
+启用官方 `lang.rust` 扩展，由 rustaceanvim 独立管理 rust-analyzer，避免通过 lspconfig 重复启动。Mason 确保安装 rust-analyzer；Rust 工具链建议使用 rustup 管理：
+
+```sh
+rustup component add rustfmt clippy
+```
+
+如希望直接使用工具链配套的 rust-analyzer，也可执行 `rustup component add rust-analyzer`。实际选中的可执行文件取决于 Neovim 的 PATH。
+
+使用 Cargo 创建和构建项目：
+
+```sh
+cargo new hello-rust
+cd hello-rust
+cargo check
+cargo fmt
+cargo clippy
+```
+
+`<leader>cR` 打开 Rust 专用代码操作。未启用 DAP 或测试运行器扩展；官方 Rust 扩展会声明 CodeLLDB 工具依赖，但调试工作流还需要相应扩展。
+
+### C / C++
+
+启用官方 `lang.clangd` 扩展，Mason 安装 clangd 和 clang-format。`<leader>ch` 切换源文件与头文件。
+
+CMake 项目生成编译数据库，让 clangd 使用真实的头文件路径、宏定义和编译参数：
+
+```sh
+cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build build
+```
+
+将代码风格写入项目 `.clang-format`；语言标准和编译选项由项目构建配置决定。当前未启用 C/C++ 调试扩展。
+
+## 自动保存与格式化
+
+- `BufLeave`：离开当前文件缓冲区时保存，包括切换文件、进入显示其他文件的分屏或标签页。
+- `FocusLost`：Neovim 失去焦点时保存；切换应用是否产生此事件取决于终端和 tmux 的支持。
+- 不在 `InsertLeave` 时保存，退出插入模式不会触发自动保存。
+- 仅保存事件对应的、已修改的、有文件名的普通缓冲区，不执行全局 `wall`；未命名文件和终端等特殊缓冲区不会自动保存。
+- 保存沿用 LazyVim 自动格式化，Conform 超时为默认的 3000ms；写入失败会显示错误。
+- 禁用 swap 和 backup，保留 LazyVim 的持久化 undo；启用 `exrc` 支持项目本地配置。
+
+## 常用快捷键
+
+`<leader>` 为空格；除另有说明外，以下按键在普通模式使用。
+
+| 按键 | 功能 |
+| --- | --- |
+| 插入模式 `jk` | 退出插入模式 |
+| `te` | 输入 `:tabedit` 命令，填写文件名或回车新建标签页 |
+| `<Tab>` | 下一个标签页 |
+| `<leader>sg` / `<leader>sG` | 搜索当前工作目录 / 项目根目录 |
+| `<leader>sd` | 指定目录搜索，留空使用当前工作目录 |
+| `gd` / `<leader>ca` | 跳转定义 / 代码操作 |
+| `gpd` / `gpt` / `gP` | 预览定义 / 类型定义 / 关闭预览 |
+| `<leader>cv` | Python 虚拟环境选择 |
+| `<leader>cR` | Rust 专用代码操作 |
+| `<leader>ch` | C/C++ 源文件与头文件切换 |
+| `<leader>ac` / `<leader>an` | 切换 CodeCompanion 聊天 / 新建聊天 |
+| `<leader>aa` / 可视模式 `<leader>as` | CodeCompanion 操作面板 / 添加选中内容 |
+| `<leader>oa` | OpenCode 提问；普通模式携带当前缓冲区，可视模式携带选中内容 |
+| 终端缓冲区的普通模式 `<C-/>` | 关闭当前终端窗口 |
+| `<leader>lc` / `<leader>lt` / `<leader>ls` | LeetCode 面板 / 测试 / 提交 |
+| `<leader>li` / `<leader>lr` / `<leader>ll` | LeetCode 详情 / 随机题 / 题目列表 |
+
+CodeCompanion 聊天内：`<C-s>` 发送，`<C-c>` 关闭，`q` 停止请求，`?` 查看按键。
+
+## 界面与辅助工具
+
+- Blink：LSP、路径、代码片段和缓冲区补全；使用 super-tab 按键方案，`<C-j>` / `<C-k>` 选择下一项 / 上一项，启用签名提示。
+- Catppuccin Macchiato 为默认主题；Tokyo Night、Kanagawa 为备用主题。
+- Snacks 提供终端、文件浏览和 Dashboard；fzf-lua 用于官方 FZF 扩展的搜索操作，自定义 grep 按键调用 Snacks picker。
+- Incline、Lualine、Noice 和 nvim-notify 提供文件名、状态栏与消息界面；Noice 签名提示关闭，使用 Blink 的提示。
+- typos-lsp 提供拼写诊断，项目例外写入 `_typos.toml`；原生 spell 关闭。
+- nvim-surround、vim-tmux-navigator、goto-preview、hardtime 和 fcitx.nvim 提供编辑、导航及输入法辅助。
+- Markdown 使用 markdown-preview 和 render-markdown。
+- OpenCode 在名为 `opencode` 的 tmux 窗口运行；当前配置不是 Snacks 终端集成。
+- LeetCode 默认使用国际站和 Python 3，题目存储目录为 `/Volumes/SanDisk/Workspace/leetcode`；其他机器需修改该路径。
+
+## 配置文件与验证
+
+| 文件 | 用途 |
+| --- | --- |
+| `lazyvim.json` | 官方语言和功能扩展 |
+| `lazy-lock.json` | 插件版本锁定 |
+| `lua/config/options.lua` | 基础设置、ESLint / Prettier 策略 |
+| `lua/config/autocmds.lua` | 自动保存与拼写设置 |
+| `lua/config/keymaps.lua` | 自定义快捷键 |
+| `lua/plugins/lsp.lua` | 语言服务与 Mason 工具安装 |
+| `lua/plugins/conform.lua` | 项目格式化工具选择 |
+| `lua/plugins/codecompanion.lua` / `opencode.lua` | AI 集成 |
+
+安装现有依赖后，在此仓库的 `nvim` 目录运行：
+
+```sh
+nvim --headless -u NONE -i NONE -l tests/development.lua
+```
+
+检查覆盖 Biome / Prettier 选择、Python import 保留、切换文件及失去焦点自动保存，以及真实 Biome LSP 的诊断位置和级别。Rust/C++ 项目的编译、语言服务和调试不在该检查范围内。
