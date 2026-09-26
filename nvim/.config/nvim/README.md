@@ -27,6 +27,7 @@
 ### 格式化与 Lint
 - `conform.nvim`: 代码自动格式化工具。
 - `nvim-lint`: 代码静态检查工具。
+- `typos-lsp`: 低误报拼写检查，使用 `<leader>ca` 查看修正建议；项目例外可配置在 `_typos.toml` 中。
 
 ### UI 与外观
 - `catppuccin`: Catppuccin Macchiato 配色方案。

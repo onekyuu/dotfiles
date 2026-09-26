@@ -63,6 +63,12 @@ alias gemini='$HOME/.nvm/versions/node/v22.12.0/bin/gemini'
 
 # Claude
 export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+claude() {
+  local token
+  token=$(security find-generic-password \
+    -s deepseek-api-token -a "$USER" -w) || return
+  ANTHROPIC_AUTH_TOKEN="$token" command claude "$@"
+}
 export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
 export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
 export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
@@ -109,8 +115,6 @@ tm() {
 	fi
 }
 
-# Kiro Terminal Integration
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 export PAGER="less"
 unset GIT_PAGER

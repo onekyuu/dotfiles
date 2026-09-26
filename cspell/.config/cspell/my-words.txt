@@ -1,3 +1,14 @@
 seele
 folke
 nvim
+deepseek
+Yazi
+unproxy
+pypi
+editstarship
+editghost
+zimconfig
+aichat
+zimrc
+ghostty
+kimi
