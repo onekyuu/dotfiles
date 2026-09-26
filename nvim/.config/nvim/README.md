@@ -28,6 +28,10 @@
 - `conform.nvim`: 代码自动格式化工具。
 - `nvim-lint`: 代码静态检查工具。
 - `typos-lsp`: 低误报拼写检查，使用 `<leader>ca` 查看修正建议；项目例外可配置在 `_typos.toml` 中。
+- 前端：有 `biome.json/jsonc` 时优先使用 Biome 格式化与 LSP 诊断；否则有 Prettier 配置时使用 Prettier。ESLint 保留诊断和代码操作，不自动格式化。
+- Python：Pyright 负责类型检查，Ruff 负责诊断；保存只执行 `ruff format`，修复 lint 和整理 import 使用 `<leader>ca`。
+- 自动保存在切换文件缓冲区或失去焦点时触发；格式化沿用 LazyVim 默认的 3000ms 超时。
+- HTML/CSS 语言服务已启用。
 
 ### UI 与外观
 - `catppuccin`: Catppuccin Macchiato 配色方案。

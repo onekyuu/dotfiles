@@ -6,3 +6,5 @@ vim.opt.spell = false
 vim.o.exrc = true
 vim.opt.swapfile = false
 vim.opt.backup = false
+vim.g.lazyvim_eslint_auto_format = false
+vim.g.lazyvim_prettier_needs_config = true

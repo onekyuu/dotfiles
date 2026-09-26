@@ -16,14 +16,16 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 local save_group = vim.api.nvim_create_augroup("GeekAutoSave", { clear = true })
-vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   group = save_group,
   pattern = "*",
   desc = "Auto save",
   callback = function(ctx)
     local bo = vim.bo[ctx.buf]
     if bo.modified and bo.buftype == "" and vim.fn.bufname(ctx.buf) ~= "" then
-      vim.cmd("silent! update")
+      vim.api.nvim_buf_call(ctx.buf, function()
+        vim.cmd("silent update")
+      end)
     end
   end,
 })

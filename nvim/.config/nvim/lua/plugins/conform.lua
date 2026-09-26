@@ -1,13 +1,23 @@
 return {
   "stevearc/conform.nvim",
-  opts = {
-    formatters_by_ft = {
-      python = { "ruff_fix", "ruff_format" },
-      javascript = { "biome" },
-      typescript = { "biome" },
-      javascriptreact = { "biome" },
-      typescriptreact = { "biome" },
-    },
-    default_format_opts = { timeout_ms = 500 },
-  },
+  opts = function(_, opts)
+    opts.formatters_by_ft.python = { "ruff_format" }
+    for _, ft in ipairs({
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "css",
+      "graphql",
+      "html",
+      "json",
+      "jsonc",
+      "vue",
+      "svelte",
+      "astro",
+    }) do
+      opts.formatters_by_ft[ft] = { "biome", "prettier", stop_after_first = true }
+    end
+    opts.formatters.biome = { require_cwd = true }
+  end,
 }
