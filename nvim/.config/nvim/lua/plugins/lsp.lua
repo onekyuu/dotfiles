@@ -1,5 +1,9 @@
 return {
   {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "clang-format", "rust-analyzer" } },
+  },
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {

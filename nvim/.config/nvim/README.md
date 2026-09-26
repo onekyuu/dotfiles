@@ -33,6 +33,14 @@
 - 自动保存在切换文件缓冲区或失去焦点时触发；格式化沿用 LazyVim 默认的 3000ms 超时。
 - HTML/CSS 语言服务已启用。
 
+### Rust 与 C/C++
+- 使用 LazyVim 官方 `lang.rust` 和 `lang.clangd` 扩展；首次启动由 Lazy/Mason 安装对应插件与工具。
+- Rust：`rustaceanvim` 管理 rust-analyzer，避免重复启动 LSP；提供补全、类型诊断、代码操作和 rustfmt 格式化，`crates.nvim` 提供 Cargo 依赖提示。
+- Rust 工具链使用 rustup：`rustup component add rust-analyzer rustfmt clippy`；项目用 Cargo 管理，版本需要固定时添加 `rust-toolchain.toml`。
+- C/C++：clangd 提供补全、诊断和 clang-tidy 检查，`<leader>ch` 切换源文件/头文件；保存使用 clang-format，风格由项目 `.clang-format` 决定。
+- CMake 项目使用 `cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON` 生成编译数据库，供 clangd 读取真实的编译参数；编译器和 CMake 需单独安装。
+- 尚未启用 DAP 或测试运行器扩展；有实际调试、测试需求时再启用。
+
 ### UI 与外观
 - `catppuccin`: Catppuccin Macchiato 配色方案。
 - `tokyonight.nvim`: Tokyo Night Moon 备用配色方案。

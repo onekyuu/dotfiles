@@ -2,6 +2,8 @@ return {
   "stevearc/conform.nvim",
   opts = function(_, opts)
     opts.formatters_by_ft.python = { "ruff_format" }
+    opts.formatters_by_ft.c = { "clang_format" }
+    opts.formatters_by_ft.cpp = { "clang_format" }
     for _, ft in ipairs({
       "javascript",
       "javascriptreact",

@@ -54,7 +54,11 @@ local ok, err = pcall(function()
 	vim.o.hidden = true
 	vim.cmd.enew()
 	assert(vim.fn.readfile(tmp .. "/test.py")[3] == "print(2)", "Switching buffers must save the old file")
-	vim.lsp.config("biome", dofile(root .. "/.config/nvim/lua/plugins/lsp.lua")[1].opts.servers.biome)
+	for _, spec in ipairs(dofile(root .. "/.config/nvim/lua/plugins/lsp.lua")) do
+		if spec[1] == "neovim/nvim-lspconfig" then
+			vim.lsp.config("biome", spec.opts.servers.biome)
+		end
+	end
 	vim.lsp.enable("biome")
 	vim.cmd.enew()
 	vim.api.nvim_buf_set_name(0, tmp .. "/biome/src/diagnostics.js")
