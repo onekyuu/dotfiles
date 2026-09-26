@@ -1,6 +1,6 @@
 font-size = 16
 font-family = MesloLGS Nerd Font Mono
-theme = "Catppuccin Mocha"
+theme = "Catppuccin Macchiato"
 adjust-cell-height = 20%
 window-padding-balance = true
 window-save-state = always

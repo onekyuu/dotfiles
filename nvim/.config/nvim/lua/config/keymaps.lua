@@ -11,19 +11,6 @@ keymap.set("i", "jk", "<Esc>", opts)
 keymap.set("n", "te", ":tabedit", opts)
 keymap.set("n", "<tab>", ":tabnext<Return>", opts)
 
-vim.keymap.set("n", "<leader>ua", function()
-  local client = require("copilot.client")
-  local command = require("copilot.command")
-
-  if client.is_disabled() then
-    command.enable()
-    vim.notify("🤖 Copilot: 已启动 (Enabled)", vim.log.levels.INFO)
-  else
-    command.disable()
-    vim.notify("🔕 Copilot: 已禁用 (Disabled)", vim.log.levels.WARN)
-  end
-end, { desc = "Toggle Copilot Enable/Disable" })
-
 vim.keymap.set("n", "<leader>sg", function()
   Snacks.picker.grep({ cwd = vim.fn.getcwd() })
 end, { desc = "Grep (Current Working Dir)" })

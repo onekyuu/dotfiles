@@ -2,10 +2,14 @@ return {
   "saghen/blink.cmp",
   version = "*",
   opts = {
-    keymap = { preset = "super-tab" },
+    keymap = {
+      preset = "super-tab",
+      ["<C-j>"] = { "select_next", "fallback" },
+      ["<C-k>"] = { "select_prev", "fallback" },
+      ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+    },
 
     appearance = {
-      use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
     },
 

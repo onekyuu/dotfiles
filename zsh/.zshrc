@@ -2,12 +2,12 @@
 typeset -U path PATH
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    alias ls="ls -G"
+	# macOS
+	alias ls="ls -G"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # Arch Linux
-    alias ls="ls --color=auto"
-    alias update="yay -Syu"
+	# Arch Linux
+	alias ls="ls --color=auto"
+	alias update="yay -Syu"
 fi
 # ==========================================
 # 1. 基础环境与路径 (Path)
@@ -19,15 +19,15 @@ export PNPM_HOME="$HOME/Library/pnpm"
 export BUN_INSTALL="$HOME/.bun"
 
 path=(
-  "$HOME/.config/emacs/bin"
-  "$HOME/.kimi-code/bin"
-  "$HOME/.local/bin"
-  "$BUN_INSTALL/bin"
-  "$HOME/.pnpm-global/bin"
-  "$PNPM_HOME"
-  "$JAVA_HOME/bin"
-  "/usr/local/bin"
-  $path
+	"$HOME/.config/emacs/bin"
+	"$HOME/.kimi-code/bin"
+	"$HOME/.local/bin"
+	"$BUN_INSTALL/bin"
+	"$HOME/.pnpm-global/bin"
+	"$PNPM_HOME"
+	"$JAVA_HOME/bin"
+	"/usr/local/bin"
+	$path
 )
 export PATH
 
@@ -37,13 +37,13 @@ export PATH
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 # 如果 zim 没编译过，自动下载安装 (可选，防止换电脑后报错)
 if [[ ! -e ${ZIM_HOME}/init.zsh ]]; then
-   curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 fi
 # 初始化 Zim
 source ${ZIM_HOME}/init.zsh
 
-if (( $+commands[fnm] )); then
-  eval "$(fnm env --use-on-cd --shell zsh)"
+if (($+commands[fnm])); then
+	eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
 # ==========================================
@@ -61,45 +61,59 @@ alias py=/usr/bin/python3
 # Gemini
 alias gemini='$HOME/.nvm/versions/node/v22.12.0/bin/gemini'
 
+# Claude
+export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export CLAUDE_CODE_EFFORT_LEVEL=max
+
+
+alias proxy='export http_proxy=http://127.0.0.1:7897 https_proxy=http://127.0.0.1:7897; unset all_proxy ALL_PROXY'
+alias unproxy='unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY'
+
 uv-publish-secure() {
-  local token
+	local token
 
-  token="$(my-keychain-secret pypi-publish-token)" || return 1
+	token="$(my-keychain-secret pypi-publish-token)" || return 1
 
-  (
-    export UV_PUBLISH_TOKEN="$token"
-    command uv publish "$@"
-  )
+	(
+		export UV_PUBLISH_TOKEN="$token"
+		command uv publish "$@"
+	)
 }
 
 # Yazi function
 function y() {
-    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-    command yazi "$@" --cwd-file="$tmp"
-    IFS= read -r -d '' cwd < "$tmp"
-    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-    rm -f -- "$tmp"
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd <"$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
 }
 
 # Tmux helper
 tm() {
-    if [[ -z "$1" ]]; then
-        name=$(basename "$PWD" | tr . _)
-    else
-        name=$1
-    fi
+	if [[ -z "$1" ]]; then
+		name=$(basename "$PWD" | tr . _)
+	else
+		name=$1
+	fi
 
-    if tmux has-session -t "=$name" 2>/dev/null; then
-        tmux attach -t "=$name"
-    else
-        tmux new -s "$name"
-    fi
+	if tmux has-session -t "=$name" 2>/dev/null; then
+		tmux attach -t "=$name"
+	else
+		tmux new -s "$name"
+	fi
 }
 
 # Kiro Terminal Integration
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 export PAGER="less"
+unset GIT_PAGER
 
 # ==========================================
 # 6. Aliases (别名)
@@ -133,7 +147,7 @@ alias ec='aichat -r en2cn'
 # ==========================================
 # 设置终端标题
 precmd() {
-  print -Pn "\e]0;%1~\a"
+	print -Pn "\e]0;%1~\a"
 }
 
 # 启动 Starship

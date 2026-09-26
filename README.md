@@ -54,7 +54,6 @@ Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macO
 | `lang.tailwind` | Tailwind CSS 智能补全 |
 | `lang.docker` / `lang.git` / `lang.json` / `lang.yaml` / `lang.toml` | 各格式 schema 与 LSP 支持 |
 | `linting.eslint` | ESLint 集成 |
-| `ai.copilot` | GitHub Copilot 内联补全 |
 | `editor.fzf` | fzf-lua 模糊搜索后端 |
 
 ---
@@ -66,8 +65,7 @@ Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macO
 | 插件 | 说明 |
 |---|---|
 | [blink.cmp](https://github.com/saghen/blink.cmp) | 全 Rust 异步补全引擎，`super-tab` 键位预设，启用签名提示 |
-| [copilot.lua](https://github.com/zbirenbaum/copilot.lua) | GitHub Copilot 内联建议，`<C-l>` 接受，自动触发 |
-| [blink-copilot](https://github.com/giuxtaposition/blink-copilot) | 将 Copilot 作为 blink.cmp 的补全源 |
+| [codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | 通过 Codex ACP 使用 ChatGPT 登录进行聊天 |
 | [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) | 多语言代码片段库 |
 
 #### 格式化 & Lint
@@ -81,8 +79,9 @@ Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macO
 
 | 插件 | 说明 |
 |---|---|
-| [catppuccin](https://github.com/catppuccin/nvim) | 主色方案，`mocha` 风格 |
-| [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | 备用主题，`night` 风格，侧边栏透明 |
+| [catppuccin](https://github.com/catppuccin/nvim) | 主色方案，`macchiato` 风格 |
+| [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | 备用主题，`moon` 风格，侧边栏透明 |
+| [kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim) | 备用主题，`wave` 风格 |
 | [noice.nvim](https://github.com/folke/noice.nvim) | 重写 cmdline、notify、LSP 文档 UI；屏蔽写入提示等噪音消息 |
 | [nvim-notify](https://github.com/rcarriga/nvim-notify) | 通知超时设置为 10 秒 |
 | [incline.nvim](https://github.com/b0o/incline.nvim) | 浮动文件名栏，显示文件类型图标与诊断计数 |

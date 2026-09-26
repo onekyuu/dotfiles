@@ -10,7 +10,8 @@
 ## ⌨️ 快捷键 (`lua/config/keymaps.lua`)
 - **插入模式**: `jk` 映射为 `<Esc>`
 - **标签页**: `te` 新建标签页，`<tab>` 切换下一个标签页
-- **Copilot**: `<leader>ua` 切换 Copilot 启用/禁用
+- **CodeCompanion**: `<leader>ac` 打开/隐藏聊天，`<leader>an` 新建聊天，`<leader>aa` 打开操作面板，选中文本后 `<leader>as` 添加到聊天
+  - 聊天窗口内：`<C-s>` 发送，`<C-c>` 关闭，`q` 停止请求，`?` 查看全部按键
 - **搜索**:
   - `<leader>sg`: 在当前工作目录 (CWD) 中 grep
   - `<leader>sG`: 在项目根目录中 grep
@@ -21,15 +22,16 @@
 
 ### 补全与 AI
 - `blink.cmp`: 高性能代码补全引擎。
-- `copilot.lua`: GitHub Copilot AI 代码辅助。
+- `codecompanion.nvim`: 通过 Codex ACP 使用 ChatGPT 订阅聊天（`:CodeCompanionChat`）。
 
 ### 格式化与 Lint
 - `conform.nvim`: 代码自动格式化工具。
 - `nvim-lint`: 代码静态检查工具。
 
 ### UI 与外观
-- `catppuccin`: Catppuccin 配色方案。
-- `tokyonight.nvim`: Tokyo Night 配色方案。
+- `catppuccin`: Catppuccin Macchiato 配色方案。
+- `tokyonight.nvim`: Tokyo Night Moon 备用配色方案。
+- `kanagawa.nvim`: Kanagawa Wave 备用配色方案。
 - `incline.nvim`: 浮动文件名显示。
 - `lualine.nvim`: 状态栏增强。
 - `noice.nvim`: 优化 LSP 文档边框和 UI 消息。

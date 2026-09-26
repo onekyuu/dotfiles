@@ -1,7 +1,8 @@
 return {
   "christoomey/vim-tmux-navigator",
   keys = {
-    ["<C-h>"] = {
+    {
+      "<C-h>",
       function()
         vim.fn.system("tmux select-pane -L")
       end,

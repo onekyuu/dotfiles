@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 local save_group = vim.api.nvim_create_augroup("GeekAutoSave", { clear = true })
-vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "FocusLost" }, {
+vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
   group = save_group,
   pattern = "*",
   desc = "Auto save",
