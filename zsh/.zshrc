@@ -151,7 +151,7 @@ alias ec='aichat -r en2cn'
 # ==========================================
 # 设置终端标题
 precmd() {
-	print -Pn "\e]0;%1~\a"
+	print -P -n "\e]0;%1~\a"
 }
 
 # 启动 Starship
