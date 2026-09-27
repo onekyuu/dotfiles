@@ -32,9 +32,24 @@ return {
                   end,
                   desc = "Force Tmux Left",
                 },
-                ["<C-j>"] = { "<cmd>TmuxNavigateDown<CR>", desc = "Tmux Down" },
-                ["<C-k>"] = { "<cmd>TmuxNavigateUp<CR>", desc = "Tmux Up" },
-                ["<C-l>"] = { "<cmd>TmuxNavigateRight<CR>", desc = "Tmux Right" },
+                ["<C-j>"] = {
+                  function()
+                    vim.cmd.TmuxNavigateDown()
+                  end,
+                  desc = "Tmux Down",
+                },
+                ["<C-k>"] = {
+                  function()
+                    vim.cmd.TmuxNavigateUp()
+                  end,
+                  desc = "Tmux Up",
+                },
+                ["<C-l>"] = {
+                  function()
+                    vim.cmd.TmuxNavigateRight()
+                  end,
+                  desc = "Tmux Right",
+                },
               },
             },
           },
