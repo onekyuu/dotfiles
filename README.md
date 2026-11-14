@@ -24,13 +24,6 @@ cd ~/dotfiles
 
 ## 工具概览
 
-### Doom Emacs — 可编程编辑环境
-
-私有配置位于 [`doom/.config/doom`](./doom/.config/doom)，启用 Evil、Corfu、
-Vertico、Dirvish、Eglot、Ruff、Org、Vterm 与自定义 Doom Modeline。macOS
-下的 Modeline 会缓存显示 CPU、内存、磁盘、电池和时间；其他系统使用 Doom
-默认 Modeline。
-
 ### Karabiner-Elements — macOS 键盘映射
 
 当前键盘映射位于

@@ -19,7 +19,6 @@ export PNPM_HOME="$HOME/Library/pnpm"
 export BUN_INSTALL="$HOME/.bun"
 
 path=(
-	"$HOME/.config/emacs/bin"
 	"$HOME/.kimi-code/bin"
 	"$HOME/.local/bin"
 	"$BUN_INSTALL/bin"

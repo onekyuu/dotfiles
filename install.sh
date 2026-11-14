@@ -32,7 +32,6 @@ TARGETS=(
 	"$HOME/.config/yazi"
 	"$HOME/.config/starship.toml"
 	"$HOME/.config/cspell"
-	"$HOME/.config/doom"
 )
 
 if [[ "$SYSTEM_NAME" == "Darwin" ]]; then
@@ -52,7 +51,7 @@ if [ -d "$BACKUP_DIR" ]; then
 fi
 
 echo "🔗 正在使用 Stow 映射配置包裹..."
-PACKAGES=(zsh nvim ghostty tmux yazi starship cspell doom)
+PACKAGES=(zsh nvim ghostty tmux yazi starship cspell)
 
 if [[ "$SYSTEM_NAME" == "Darwin" ]]; then
 	PACKAGES+=(karabiner)

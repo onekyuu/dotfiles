@@ -8,11 +8,6 @@
                         "description": "Application Launcher",
                         "manipulators": [
                             {
-                                "from": { "key_code": "f13" },
-                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "org.gnu.Emacs" } } }],
-                                "type": "basic"
-                            },
-                            {
                                 "from": { "key_code": "f14" },
                                 "to": [{ "software_function": { "open_application": { "bundle_identifier": "com.openai.codex" } } }],
                                 "type": "basic"
