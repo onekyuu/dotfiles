@@ -1,5 +1,7 @@
 # My Dotfiles
 
+**简体中文** · [日本語](./README.ja.md) · [English](./README.en.md)
+
 跨 **macOS** 与 **Arch Linux** 的纯键盘流开发环境配置，面向前端（TypeScript / React / Next.js）与 Python 后端开发。通过 GNU Stow 管理软链接，结构严格镜像 `~` 目录。
 
 ## 使用操作
