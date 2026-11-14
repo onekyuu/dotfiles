@@ -56,27 +56,8 @@ alias py=/usr/bin/python3
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # ==========================================
-# 5. 工具配置 (Claude, DeepSeek, Yazi, Tmux)
+# 5. 工具配置 (Yazi, Tmux)
 # ==========================================
-# Gemini
-alias gemini='$HOME/.nvm/versions/node/v22.12.0/bin/gemini'
-
-# Claude
-export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-claude() {
-  local token
-  token=$(security find-generic-password \
-    -s deepseek-api-token -a "$USER" -w) || return
-  ANTHROPIC_AUTH_TOKEN="$token" command claude "$@"
-}
-export ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
-export CLAUDE_CODE_EFFORT_LEVEL=max
-
-
 alias proxy='export http_proxy=http://127.0.0.1:7897 https_proxy=http://127.0.0.1:7897; unset all_proxy ALL_PROXY'
 alias unproxy='unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY'
 
