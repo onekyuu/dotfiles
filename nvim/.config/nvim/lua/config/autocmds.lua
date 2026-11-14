@@ -7,6 +7,16 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- 此文件在 VeryLazy 加载：启动目录的文件树已打开，随后把焦点交还编辑区。
+vim.schedule(function()
+  for _, picker in ipairs(Snacks.picker.get({ source = "explorer" })) do
+    if picker:is_focused() and vim.api.nvim_win_is_valid(picker.main) then
+      vim.api.nvim_set_current_win(picker.main)
+      break
+    end
+  end
+end)
+
 -- 强制关闭 Markdown 和 Text 文件的原生拼写检查
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",

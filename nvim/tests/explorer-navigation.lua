@@ -1,8 +1,20 @@
 -- Run: nvim --headless -u NONE -i NONE -n -l tests/explorer-navigation.lua
 local data = vim.fn.stdpath("data") .. "/lazy/"
 vim.opt.rtp:append(data .. "snacks.nvim")
-vim.opt.rtp:append(data .. "vim-tmux-navigator")
-vim.cmd.runtime("plugin/tmux_navigator.vim")
+vim.opt.rtp:append(data .. "lazy.nvim")
+local navigator = dofile(".config/nvim/lua/plugins/tmux-nav.lua")
+navigator.dir = data .. "vim-tmux-navigator"
+vim.o.loadplugins = true
+require("lazy").setup({ navigator }, {
+  lockfile = vim.fn.tempname(),
+  install = { missing = false },
+  checker = { enabled = false },
+  change_detection = { enabled = false },
+  pkg = { enabled = false },
+  readme = { enabled = false },
+  performance = { rtp = { reset = false } },
+})
+assert(not require("lazy.core.config").plugins["vim-tmux-navigator"]._.loaded, "Navigator must start unloaded")
 vim.o.columns = 120
 vim.o.lines = 40
 local spec = dofile(".config/nvim/lua/plugins/snacks.lua")
